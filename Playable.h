@@ -10,7 +10,7 @@
 
 class Playable {
 public:
-    virtual void play() const = 0;
+    virtual void play() const;
 
 };
 

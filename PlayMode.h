@@ -5,34 +5,33 @@
 #ifndef JNP1_6_PROJECT_PLAYMODE_H
 #define JNP1_6_PROJECT_PLAYMODE_H
 
-#include "Playable.h"
 #include <memory>
 
 class PlayMode {
 public:
-    virtual void play(const Playlist& playlist) = 0;
+    virtual  int next() = 0;
 };
 
 class Shuffle {
 public:
-    void play(const Playlist& playlist);
+    int next();
 };
 
 class OddEven {
 public:
-    void play(const Playlist& playlist);
+    int next();
 };
 
 class Sequence {
 public:
-    void play(const Playlist& playlist);
+    int next();
 };
 
 class PlayModeFabric {
 public:
-    std::unique_ptr<Shuffle> createShuffle {
-        return std::make_unique<Shuffle>();
-    }
+    static Shuffle createShuffle();
+    static OddEven createOddEven();
+    static Sequence createSequence();
 };
 
 
