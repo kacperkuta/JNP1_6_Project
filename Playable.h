@@ -16,11 +16,17 @@ public:
 };
 
 class Playlist : Playable {
+    const std::string name;
 public:
     void play() const override;
+    void add(Playable element);
+    void add(Playable element, size_t position);
+    void remove();
+    void remove(size_t position);
+    void setMode(PlayMode mode);
 
 private:
-    std::unique_ptr<PlayMode> myPlayMode;
+    std::unique_ptr<PlayMode> mode;
     std::vector<std::shared_ptr<Playable>> elements;
 };
 
@@ -43,6 +49,7 @@ private:
     std::string content;
 public:
     void play() const override;
+
 };
 
 #endif //JNP1_6_PROJECT_PLAYABLE_H

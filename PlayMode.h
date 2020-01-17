@@ -6,30 +6,41 @@
 #define JNP1_6_PROJECT_PLAYMODE_H
 
 #include <memory>
+#include <random>
 
 class PlayMode {
 public:
-    virtual int next() = 0;
+    virtual size_t next(size_t size);
 };
 
 class Shuffle : PlayMode {
 public:
-    int next() override;
+    size_t next(size_t size) override;
+    Shuffle(unsigned seed);
+
+private:
+    std::default_random_engine generator;
 };
 
 class OddEven : PlayMode {
 public:
-    int next() override;
+    size_t next(size_t size) override;
+    OddEven();
+private:
+    size_t position;
 };
 
 class Sequence : PlayMode {
 public:
-    int next() override;
+    size_t next(size_t size) override;
+    Sequence();
+private:
+    size_t position;
 };
 
 class PlayModeFabric {
 public:
-    static Shuffle createShuffle();
+    static Shuffle createShuffle(unsigned seed);
     static OddEven createOddEven();
     static Sequence createSequence();
 };
