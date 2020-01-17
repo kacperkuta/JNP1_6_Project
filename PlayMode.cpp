@@ -28,16 +28,16 @@ size_t Sequence::next(size_t size) {
     return toReturn;
 }
 
-Shuffle PlayModeFabric::createShuffle(unsigned seed) {
-    return Shuffle(seed);
+std::shared_ptr<Shuffle> PlayModeFabric::createShuffle(unsigned seed) {
+    return std::make_shared<Shuffle>(seed);
 }
 
-OddEven PlayModeFabric::createOddEven() {
-    return OddEven();
+std::shared_ptr<OddEven> PlayModeFabric::createOddEven() {
+    return std::make_shared<OddEven>();
 }
 
-Sequence PlayModeFabric::createSequence() {
-    return Sequence();
+std::shared_ptr<Sequence> PlayModeFabric::createSequence() {
+    return std::make_shared<Sequence>();
 }
 
 /**

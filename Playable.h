@@ -1,7 +1,3 @@
-//
-// Created by baka475 on 16.01.20.
-//
-
 #ifndef JNP1_6_PROJECT_PLAYABLE_H
 #define JNP1_6_PROJECT_PLAYABLE_H
 
@@ -11,44 +7,47 @@
 
 class Playable {
 public:
-    virtual void play() const;
+    virtual void play() const {};
 
 };
 
 class Playlist : Playable {
-    const std::string name;
 public:
     void play() const override;
-    void add(Playable element);
-    void add(Playable element, size_t position);
+    void add(std::shared_ptr<Playable> element);
+    void add(std::shared_ptr<Playable> element, size_t position);
     void remove();
     void remove(size_t position);
     void setMode(PlayMode mode);
+    explicit Playlist(const std::string& name) : name(std::string(name)) {};
 
 private:
-    std::unique_ptr<PlayMode> mode;
+    PlayMode mode;
     std::vector<std::shared_ptr<Playable>> elements;
+    const std::string name;
 };
 
 class Song : Playable {
 private:
-    std::string artist;
-    std::string title;
-    std::string other;
-    std::string content;
+    const std::string artist;
+    const std::string title;
+    const std::string other;
+    const std::string content;
 public:
     void play() const override;
-
+    Song(std::string artist,  std::string title,
+             std::string other,  std::string content);
 };
 
 class Movie : Playable {
 private:
     int year;
-    std::string title;
-    std::string other;
-    std::string content;
+    const std::string title;
+    const std::string other;
+    const std::string content;
 public:
     void play() const override;
+    Movie(int year, std::string title, std::string other, std::string content);
 
 };
 
