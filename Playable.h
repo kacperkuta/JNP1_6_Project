@@ -18,11 +18,11 @@ public:
     void add(std::shared_ptr<Playable> element, size_t position);
     void remove();
     void remove(size_t position);
-    void setMode(PlayMode mode);
+    void setMode(std::shared_ptr<PlayMode> mode);
     explicit Playlist(const std::string& name);
 
 private:
-    PlayMode mode;
+    std::shared_ptr<PlayMode> mode;
     std::vector<std::shared_ptr<Playable>> elements;
     const std::string name;
 };

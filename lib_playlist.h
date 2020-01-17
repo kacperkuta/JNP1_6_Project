@@ -11,13 +11,13 @@
 #include "PlayMode.h"
 #include "PlayerException.h"
 
-Sequence createSequenceMode() {
+std::shared_ptr<Sequence> createSequenceMode() {
     return PlayModeFabric::createSequence();
 }
-Shuffle createShuffleMode(unsigned seed) {
+std::shared_ptr<Shuffle> createShuffleMode(unsigned seed) {
     return PlayModeFabric::createShuffle(seed);
 }
-OddEven createOddEvenMode() {
+std::shared_ptr<OddEven> createOddEvenMode() {
     return PlayModeFabric::createOddEven();
 }
 

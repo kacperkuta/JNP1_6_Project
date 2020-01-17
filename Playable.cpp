@@ -3,11 +3,14 @@
 
 Playlist::Playlist(const std::string &name)
     : name (name)
-    , mode(std::move(PlayModeFabric::createSequence())){}
+    , mode(PlayModeFabric::createSequence())
+    {
+        mode->usageIncrement();
+    }
 
 void Playlist::play() {
     for (int i = 0; i < elements.size(); i++) {
-        elements[mode.next(elements.size())]->play();
+        elements[mode->next(elements.size())]->play();
     }
     mode.reset();
 }
@@ -47,8 +50,13 @@ void Playlist::remove(size_t position) {
     }
 }
 
-void Playlist::setMode(PlayMode mode) {
-    this->mode = std::move(mode);
+void Playlist::setMode(std::shared_ptr<PlayMode> mode) {
+    if (mode->getUsage() > 0) {
+        mode = mode->copyOf();
+    } else {
+        this->mode = mode;
+    }
+    this->mode->usageIncrement();
 }
 
 Song::Song(std::string artist, std::string title,

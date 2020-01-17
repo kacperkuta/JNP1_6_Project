@@ -13,13 +13,20 @@
  */
 class PlayMode {
 public:
-    /**
-     * @brief Gives next @ref Playable to play.
-     * @param size Size of playlist.
-     * @return Next @ref Playable to play.
-     */
+
+    PlayMode();
+    explicit PlayMode(unsigned position);
+
+    virtual std::shared_ptr<PlayMode> copyOf();
     virtual size_t next(size_t size);
     virtual void reset() {};
+    void usageIncrement();
+    int getUsage();
+
+private:
+    int usage;
+protected:
+    size_t position;
 };
 
 
@@ -30,10 +37,13 @@ class Shuffle : public PlayMode {
 public:
     size_t next(size_t size) override;
     void reset() override;
+    std::shared_ptr<PlayMode> copyOf() override;
+
     explicit Shuffle(unsigned seed);
 
 private:
     unsigned seed;
+    std::vector<size_t> numbers;
     std::default_random_engine generator;
 };
 
@@ -44,9 +54,9 @@ class OddEven : public PlayMode {
 public:
     size_t next(size_t size) override;
     void reset() override;
+    std::shared_ptr<PlayMode> copyOf() override;
+
     OddEven();
-private:
-    size_t position;
 };
 
 /**
@@ -56,9 +66,9 @@ class Sequence : public PlayMode {
 public:
     size_t next(size_t size) override;
     void reset() override;
+    std::shared_ptr<PlayMode> copyOf() override;
+
     Sequence();
-private:
-    size_t position;
 };
 
 /**
@@ -66,9 +76,9 @@ private:
  */
 class PlayModeFabric {
 public:
-    static Shuffle createShuffle(unsigned seed);
-    static OddEven createOddEven();
-    static Sequence createSequence();
+    static std::shared_ptr<Shuffle> createShuffle(unsigned seed);
+    static std::shared_ptr<OddEven> createOddEven();
+    static std::shared_ptr<Sequence> createSequence();
 };
 
 

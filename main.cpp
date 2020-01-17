@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include "lib_playlist.h"
 int main() {
 
@@ -14,7 +15,19 @@ int main() {
     list.add(song3);
     list.add(song4);
 
+    Playlist list2("lista2");
+    list2.add(song2);
+    list2.add(song3);
+    list2.add(song4);
+
+    auto mode = createShuffleMode(0);
+    list.setMode(mode);
+    list2.setMode(mode);
+
     list.play();
+    std::cout << "testy\n";
+    sleep(1);
+    list2.play();
 
 
     return 0;
