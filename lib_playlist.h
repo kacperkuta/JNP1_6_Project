@@ -9,6 +9,7 @@
 #include "Playable.h"
 #include "File.h"
 #include "PlayMode.h"
+#include "PlayerException.h"
 
 Sequence createSequenceMode() {
     return PlayModeFabric::createSequence();

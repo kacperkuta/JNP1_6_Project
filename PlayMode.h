@@ -9,22 +9,22 @@
 
 class PlayMode {
 public:
-    virtual  int next() = 0;
+    virtual int next() = 0;
 };
 
-class Shuffle {
+class Shuffle : PlayMode {
 public:
-    int next();
+    int next() override;
 };
 
-class OddEven {
+class OddEven : PlayMode {
 public:
-    int next();
+    int next() override;
 };
 
-class Sequence {
+class Sequence : PlayMode {
 public:
-    int next();
+    int next() override;
 };
 
 class PlayModeFabric {

@@ -13,7 +13,6 @@ class Player {
 public:
     Playable openFile(const File& file);
     Playlist createPlaylist(const std::string& name);
-
 };
 
 
