@@ -19,27 +19,31 @@ public:
      * @return Next @ref Playable to play.
      */
     virtual size_t next(size_t size);
+    virtual void reset() {};
 };
 
 
 /**
  * @brief Suffle playmode derived class
  */
-class Shuffle : PlayMode {
+class Shuffle : public PlayMode {
 public:
     size_t next(size_t size) override;
+    void reset() override;
     explicit Shuffle(unsigned seed);
 
 private:
+    unsigned seed;
     std::default_random_engine generator;
 };
 
 /**
  * @brief OddEven playmode derived class
  */
-class OddEven : PlayMode {
+class OddEven : public PlayMode {
 public:
     size_t next(size_t size) override;
+    void reset() override;
     OddEven();
 private:
     size_t position;
@@ -48,9 +52,10 @@ private:
 /**
  * @brief Sequence playmode derived class
  */
-class Sequence : PlayMode {
+class Sequence : public PlayMode {
 public:
     size_t next(size_t size) override;
+    void reset() override;
     Sequence();
 private:
     size_t position;
@@ -61,9 +66,9 @@ private:
  */
 class PlayModeFabric {
 public:
-    static std::shared_ptr<Shuffle> createShuffle(unsigned seed);
-    static std::shared_ptr<OddEven> createOddEven();
-    static std::shared_ptr<Sequence> createSequence();
+    static Shuffle createShuffle(unsigned seed);
+    static OddEven createOddEven();
+    static Sequence createSequence();
 };
 
 

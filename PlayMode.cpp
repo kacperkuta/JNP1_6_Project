@@ -1,9 +1,16 @@
+#include <iostream>
 #include "PlayMode.h"
 
-Shuffle::Shuffle(unsigned seed) : generator(std::default_random_engine(seed)) {};
+Shuffle::Shuffle(unsigned seed)
+    : generator(std::default_random_engine(seed))
+    , seed(seed) {}
 
 size_t Shuffle::next(size_t size) {
     return generator()%size;
+}
+
+void Shuffle::reset() {
+    generator = std::default_random_engine(seed);
 }
 
 OddEven::OddEven() : position(1) {};
@@ -19,25 +26,34 @@ size_t OddEven::next(size_t size) {
     }
 }
 
+void OddEven::reset() {
+    position = 1;
+}
+
 Sequence::Sequence() : position(0) {};
 
 size_t Sequence::next(size_t size) {
     size_t toReturn = position;
-    if (position < size - 1)
+    if (position < size - 1) {
         position++;
+    }
     return toReturn;
 }
 
-std::shared_ptr<Shuffle> PlayModeFabric::createShuffle(unsigned seed) {
-    return std::make_shared<Shuffle>(seed);
+void Sequence::reset() {
+    position = 0;
 }
 
-std::shared_ptr<OddEven> PlayModeFabric::createOddEven() {
-    return std::make_shared<OddEven>();
+Shuffle PlayModeFabric::createShuffle(unsigned seed) {
+    return Shuffle(seed);
 }
 
-std::shared_ptr<Sequence> PlayModeFabric::createSequence() {
-    return std::make_shared<Sequence>();
+OddEven PlayModeFabric::createOddEven() {
+    return OddEven();
+}
+
+Sequence PlayModeFabric::createSequence() {
+    return Sequence();
 }
 
 /**

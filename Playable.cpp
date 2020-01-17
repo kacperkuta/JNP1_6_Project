@@ -1,10 +1,15 @@
 #include "Playable.h"
 #include <iostream>
 
-void Playlist::play() const {
-    for (const std::shared_ptr<Playable>& el : elements) {
-        el->play();
+Playlist::Playlist(const std::string &name)
+    : name (name)
+    , mode(std::move(PlayModeFabric::createSequence())){}
+
+void Playlist::play() {
+    for (int i = 0; i < elements.size(); i++) {
+        elements[mode.next(elements.size())]->play();
     }
+    mode.reset();
 }
 
 void Playlist::add(std::shared_ptr<Playable> element) {
@@ -53,7 +58,7 @@ Song::Song(std::string artist, std::string title,
            , other(std::move(other))
            , content(std::move(content)) {}
 
-void Song::play() const {
+void Song::play() {
     std::cout << "Song ["
               << artist << ", "
               << title << "]: "
@@ -67,7 +72,7 @@ Movie::Movie(int year, std::string title,
         , other(std::move(other))
         , content(std::move(other)) {}
 
-void Movie::play() const {
+void Movie::play() {
     std::cout << "Movie ["
               << title << ", "
               << year << "]: "
