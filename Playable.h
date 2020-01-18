@@ -8,6 +8,7 @@
 class Playable {
 public:
     virtual void play() {};
+    virtual ~Playable() = default;
 
 };
 
@@ -19,7 +20,9 @@ public:
     void remove();
     void remove(size_t position);
     void setMode(std::shared_ptr<PlayMode> mode);
+
     explicit Playlist(const std::string& name);
+    ~Playlist() override = default;
 
 private:
     std::shared_ptr<PlayMode> mode;
@@ -37,6 +40,7 @@ public:
     void play() override;
     Song(std::string artist,  std::string title,
              std::string other,  std::string content);
+    ~Song() override = default;
 };
 
 class Movie : public Playable {
@@ -48,6 +52,7 @@ private:
 public:
     void play() override;
     Movie(int year, std::string title, std::string other, std::string content);
+    ~Movie() override = default;
 
 };
 

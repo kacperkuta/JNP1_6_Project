@@ -16,6 +16,7 @@ public:
 
     PlayMode();
     explicit PlayMode(unsigned position);
+    virtual ~PlayMode() = default;
 
     virtual std::shared_ptr<PlayMode> copyOf();
     virtual size_t next(size_t size);
@@ -40,6 +41,7 @@ public:
     std::shared_ptr<PlayMode> copyOf() override;
 
     explicit Shuffle(unsigned seed);
+    ~Shuffle() override = default;
 
 private:
     unsigned seed;
@@ -57,6 +59,7 @@ public:
     std::shared_ptr<PlayMode> copyOf() override;
 
     OddEven();
+    ~OddEven() override = default;
 };
 
 /**
@@ -69,6 +72,7 @@ public:
     std::shared_ptr<PlayMode> copyOf() override;
 
     Sequence();
+    ~Sequence() override = default;
 };
 
 /**
