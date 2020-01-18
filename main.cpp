@@ -29,6 +29,18 @@ int main() {
     sleep(1);
     list2.play();
 
+    for (int i = 0; i < 4; i++) {
+        try {
+            list2.remove();
+        } catch (PlayerException& e) {
+            std::cout << e.what() << std::endl;
+        }
+    }
+
+    std::cout << "Playing empty\n";
+
+    list2.play();
+
 
     return 0;
 }

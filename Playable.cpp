@@ -1,5 +1,6 @@
-#include "Playable.h"
 #include <iostream>
+#include "Playable.h"
+#include "PlayerException.h"
 
 Playlist::Playlist(const std::string &name)
     : name (name)
@@ -25,8 +26,7 @@ void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
         it += position;
         elements.insert(it, element);
     } else {
-        //TODO
-        //wyjątek
+        throw IncorrectPosition();
     }
 }
 
@@ -34,8 +34,7 @@ void Playlist::remove() {
     if (!elements.empty()) {
         elements.pop_back();
     } else {
-        //TODO
-        //wyjątek
+        throw EmptyPlaylistRemove();
     }
 }
 
@@ -45,8 +44,7 @@ void Playlist::remove(size_t position) {
         it += position;
         elements.erase(it);
     } else {
-        //TODO
-        //wyjątek
+        throw IncorrectPosition();
     }
 }
 
