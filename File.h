@@ -8,15 +8,15 @@
 #include "Playable.h"
 
 class OpeningStrategy {
-    virtual Playable open();
+    virtual std::shared_ptr<Playable> open();
 };
 
 class OpenSong : OpeningStrategy {
-    Playable open() override;
+    std::shared_ptr<Playable> open() override;
 };
 
 class OpenMovie : OpeningStrategy {
-    Playable open() override;
+    std::shared_ptr<Playable> open() override;
 };
 
 class File {

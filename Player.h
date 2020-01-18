@@ -11,8 +11,8 @@
 class Player {
 
 public:
-    Playable openFile(const File& file);
-    Playlist createPlaylist(const std::string& name);
+    std::shared_ptr<Playable> openFile(const File& file);
+    std::shared_ptr<Playlist> createPlaylist(std::string name);
 };
 
 
