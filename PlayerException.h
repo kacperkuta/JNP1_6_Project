@@ -10,6 +10,7 @@ public:
     virtual const char* what() {
         return "PlayerException";
     }
+    ~PlayerException() override = default;
 };
 
 class IncorrectPosition : public PlayerException {
@@ -23,6 +24,13 @@ class EmptyPlaylistRemove : public PlayerException {
 public:
     const char* what() override {
         return "Remove called on empty Playlist";
+    }
+};
+
+class CyclicPlaylistInsertion : public PlayerException {
+public:
+    const char* what() override {
+        return "Playlist adding will cause infinite cyclic playing";
     }
 };
 

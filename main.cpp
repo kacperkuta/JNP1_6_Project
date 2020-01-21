@@ -1,5 +1,6 @@
 #include <iostream>
 #include <unistd.h>
+#include <unordered_map>
 #include "lib_playlist.h"
 int main() {
 
@@ -9,37 +10,27 @@ int main() {
     std::shared_ptr<Playable> song4 = std::make_shared<Song>(Song("D", "D", "", "lalalalalala"));
 
 
-    Playlist list("lista");
-    list.add(song1);
-    list.add(song2);
-    list.add(song3);
-    list.add(song4);
+    std::shared_ptr<Playlist> list = std::make_shared<Playlist>("lista");
+    list->add(song1);
+    list->add(song2);
+    list->add(song3);
+    list->add(song4);
 
-    Playlist list2("lista2");
-    list2.add(song2);
-    list2.add(song3);
-    list2.add(song4);
+    std::shared_ptr<Playlist> list2 = std::make_shared<Playlist>("lista");
+    list2->add(song2);
+    list2->add(song3);
+    list2->add(song4);
 
     auto mode = createShuffleMode(0);
-    list.setMode(mode);
-    list2.setMode(mode);
+    list->setMode(mode);
+    //list2->setMode(mode);
 
-    list.play();
-    std::cout << "testy\n";
-    sleep(1);
-    list2.play();
+    list2->play();
+    std::cout << "drugie play\n";
+    list2->add(list);
+    //list2->add(list);
+    list2->play();
 
-    for (int i = 0; i < 4; i++) {
-        try {
-            list2.remove();
-        } catch (PlayerException& e) {
-            std::cout << e.what() << std::endl;
-        }
-    }
-
-    std::cout << "Playing empty\n";
-
-    list2.play();
 
 
     return 0;

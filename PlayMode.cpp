@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <cassert>
 #include "PlayMode.h"
 
 PlayMode::PlayMode() : usage(0), position(0) {};
@@ -36,6 +37,9 @@ size_t Shuffle::next(size_t size) {
 
 void Shuffle::reset() {
     generator = std::default_random_engine(seed);
+    numbers.clear();
+    position = 0;
+    assert(numbers.empty());
 }
 
 std::shared_ptr<PlayMode> Shuffle::copyOf() {
