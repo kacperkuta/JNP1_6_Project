@@ -100,9 +100,9 @@ void Song::play() {
               << content << std::endl;
 }
 
-Movie::Movie(std::string year, std::string title,
+Movie::Movie(const size_t year, std::string title,
         std::string other, std::string content)
-        : year(std::move(year))
+        : year(year)
         , title(std::move(title))
         , other(std::move(other))
         , content(std::move(content)) {}

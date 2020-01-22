@@ -90,8 +90,9 @@ void OpenMovie::rot13(std::string &str) {
 
 std::shared_ptr<Playable> OpenMovie::open(const std::string &desc) {
   std::vector<std::string> result;
-   boost::split(result, desc, boost::is_any_of("|"));
-  std::string year, title, other = "";
+  boost::split(result, desc, boost::is_any_of("|"));
+  std::string yearStr, title, other = "";
+  size_t year;
   bool yearPresent = false, titlePresent = false;
   for (size_t i = 1; i < result.size() - 1; ++i) {
     size_t delimPos = result[i].find(':');
@@ -101,10 +102,26 @@ std::shared_ptr<Playable> OpenMovie::open(const std::string &desc) {
     std::string metadataName = result[i].substr(0, delimPos);
     
     if (metadataName == "year") {
+      if (yearPresent) {
+        throw InvalidMetadata();
+      }
+      yearStr = result[i].substr(delimPos + 1, result[i].size() - delimPos - 1);
+      std::regex reg("^[0-9][1-9]*$");
+      if (!std::regex_match(yearStr, reg)) {
+        throw InvalidMetadata();
+      }
+      try {
+        year = std::stoi(yearStr);
+      }
+      catch (const std::out_of_range &exception) {
+        throw InvalidMetadata();
+      }
       yearPresent = true;
-      year = result[i].substr(delimPos + 1, result[i].size() - delimPos - 1);
     }
     else if (metadataName == "title") {
+      if (titlePresent) {
+        throw InvalidMetadata();
+      }
       titlePresent = true;
       title = result[i].substr(delimPos + 1, result[i].size() - delimPos - 1);
     }
