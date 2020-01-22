@@ -3,11 +3,12 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_set>
 #include "PlayMode.h"
 
 class Playable {
 public:
-    virtual void play() {};
+    virtual void play() = 0;
     virtual ~Playable() = default;
 
 };
@@ -17,17 +18,23 @@ public:
     void play() override;
     void add(std::shared_ptr<Playable> element);
     void add(std::shared_ptr<Playable> element, size_t position);
+    void add(std::shared_ptr<Playlist> element);
+    void add(std::shared_ptr<Playlist> element, size_t position);
     void remove();
     void remove(size_t position);
     void setMode(std::shared_ptr<PlayMode> mode);
 
     explicit Playlist(const std::string& name);
-    ~Playlist() override = default;
 
 private:
-    const std::string name;
+    void positionAdd(std::shared_ptr<Playable> element, size_t position);
+    void cycleCheck(std::shared_ptr<Playlist> element);
+
     std::shared_ptr<PlayMode> mode;
     std::vector<std::shared_ptr<Playable>> elements;
+    std::unordered_set<Playlist*> playlistsInside;
+    const std::string name;
+    std::shared_ptr<Playlist> myPtr;
 };
 
 class Song : public Playable {
@@ -40,7 +47,6 @@ public:
     void play() override;
     Song(std::string artist,  std::string title,
              std::string other,  std::string content);
-    ~Song() override = default;
 };
 
 class Movie : public Playable {
@@ -52,7 +58,6 @@ private:
 public:
     void play() override;
     Movie(std::string year, std::string title, std::string other, std::string content);
-    ~Movie() override = default;
 
 };
 

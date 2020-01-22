@@ -13,14 +13,23 @@ void Playlist::play() {
     for (size_t i = 0; i < elements.size(); i++) {
         elements[mode->next(elements.size())]->play();
     }
-    mode.reset();
+    mode->reset();
 }
 
 void Playlist::add(std::shared_ptr<Playable> element) {
     elements.push_back(element);
 }
 
-void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
+void Playlist::add(std::shared_ptr<Playlist> element) {
+    cycleCheck(element);
+    for (const auto& ptr : element->playlistsInside) {
+        playlistsInside.insert(ptr);
+    }
+    playlistsInside.insert(element.get());
+    elements.push_back(element);
+}
+
+void Playlist::positionAdd(std::shared_ptr<Playable> element, size_t position) {
     if (position <= elements.size()) {
         auto it = elements.begin();
         it += position;
@@ -28,6 +37,26 @@ void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
     } else {
         throw IncorrectPosition();
     }
+}
+
+void Playlist::cycleCheck(std::shared_ptr<Playlist> element) {
+    if (element->playlistsInside.find(this) != element->playlistsInside.end()
+            || element.get() == this) {
+        throw CyclicPlaylistInsertion();
+    }
+}
+
+void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
+    positionAdd(std::move(element), position);
+}
+
+void Playlist::add(std::shared_ptr<Playlist> element, size_t position) {
+    cycleCheck(element);
+    for (const auto& ptr : element->playlistsInside) {
+        playlistsInside.insert(ptr);
+    }
+    playlistsInside.insert(element.get());
+    positionAdd(std::move(element), position);
 }
 
 void Playlist::remove() {

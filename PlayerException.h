@@ -10,6 +10,7 @@ public:
     virtual const char* what() const throw() {
         return "PlayerException";
     }
+    ~PlayerException() override = default;
 };
 
 class IncorrectPosition : public PlayerException {
@@ -46,4 +47,12 @@ public:
         return "Invalid file content";
     }
 };
+
+class CyclicPlaylistInsertion : public PlayerException {
+public:
+    const char* what() const throw() override {
+        return "Playlist adding will cause infinite cyclic playing";
+    }
+};
+
 #endif //JNP1_6_PROJECT_PLAYEREXCEPTION_H
