@@ -5,6 +5,8 @@
 #ifndef JNP1_6_PROJECT_PLAYER_H
 #define JNP1_6_PROJECT_PLAYER_H
 
+#include <memory>
+#include <string>
 #include "Playable.h"
 #include "File.h"
 
@@ -12,7 +14,7 @@ class Player {
 
 public:
     std::shared_ptr<Playable> openFile(const File& file);
-    std::shared_ptr<Playlist> createPlaylist(std::string name);
+    std::shared_ptr<Playlist> createPlaylist(const std::string &name);
 };
 
 

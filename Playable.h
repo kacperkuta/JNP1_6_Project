@@ -51,13 +51,13 @@ public:
 
 class Movie : public Playable {
 private:
-    int year;
+    std::string year;
     const std::string title;
     const std::string other;
     const std::string content;
 public:
     void play() override;
-    Movie(int year, std::string title, std::string other, std::string content);
+    Movie(std::string year, std::string title, std::string other, std::string content);
 
 };
 
