@@ -44,9 +44,9 @@ public:
     ~Shuffle() override = default;
 
 private:
+    std::default_random_engine generator;
     unsigned seed;
     std::vector<size_t> numbers;
-    std::default_random_engine generator;
 };
 
 /**

@@ -10,7 +10,7 @@ Playlist::Playlist(const std::string &name)
     }
 
 void Playlist::play() {
-    for (int i = 0; i < elements.size(); i++) {
+    for (size_t i = 0; i < elements.size(); i++) {
         elements[mode->next(elements.size())]->play();
     }
     mode.reset();
@@ -71,12 +71,12 @@ void Song::play() {
               << content << std::endl;
 }
 
-Movie::Movie(int year, std::string title,
+Movie::Movie(std::string year, std::string title,
         std::string other, std::string content)
-        : year(year)
+        : year(std::move(year))
         , title(std::move(title))
         , other(std::move(other))
-        , content(std::move(other)) {}
+        , content(std::move(content)) {}
 
 void Movie::play() {
     std::cout << "Movie ["
