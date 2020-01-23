@@ -108,8 +108,8 @@ void Playlist::setMode(std::shared_ptr<PlayMode> mode) {
 
 Song::Song(std::string artist, std::string title,
            std::string other, std::string content)
-        : artist(std::move(artist)), title(std::move(title)),
-          other(std::move(other)), content(std::move(content)) {}
+        : artist(std::move(artist)), title(std::move(title))
+        , other(std::move(other)), content(std::move(content)) {}
 
 void Song::play() {
     std::cout << "Song ["
@@ -120,8 +120,8 @@ void Song::play() {
 
 Movie::Movie(const size_t year, std::string title,
              std::string other, std::string content)
-        : year(year), title(std::move(title)), other(std::move(other)),
-          content(std::move(content)) {}
+        : year(year), title(std::move(title)), other(std::move(other))
+        , content(std::move(content)) {}
 
 void Movie::play() {
     std::cout << "Movie ["
