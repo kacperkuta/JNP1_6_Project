@@ -4,31 +4,29 @@
 #include <cassert>
 #include "lib_playlist.h"
 
-class A {
-public:
-    virtual void f() {
-
-        std::cout << "tety\n";
-    }
-};
-
-class B : public A {
-private:
-    void f() {
-
-        std::cout << "tetttttty\n";
-    }
-};
 
 int main() {
 
-    B* b = new B;
-    A* a = b;
+    Player p;
+    auto p1 = p.createPlaylist("p1");
+    auto p2 = p.createPlaylist("p2");
+    auto p3 = p.createPlaylist("p3");
+    auto p4 = p.createPlaylist("p4");
 
-    a->f();
+    p1->add(p2);
+    p1->add(p3);
+    p1->add(p4);
+    p1->add(p3);
+    p1->add(p2);
+
+    p1->play();
+
+    std::cout << "=====\n";
 
 
-
+    p1->play();
+    std::cout << "=====\n";
+    p1->play();
 
     return 0;
 }
