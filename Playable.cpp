@@ -1,9 +1,17 @@
 #include <iostream>
+#include <cassert>
 #include "Playable.h"
 #include "PlayerException.h"
 
+Playlist::~Playlist() {
+    for (const auto& el : elements) {
+        el->unpinFather(this);
+    }
+}
+
 Playlist::Playlist(const std::string &name)
-        : name(name), mode(PlayModeFabric::createSequence()) {
+        : name(name)
+        , mode(PlayModeFabric::createSequence()) {
     mode->usageIncrement();
 }
 
@@ -21,10 +29,7 @@ void Playlist::add(std::shared_ptr<Playable> element) {
 
 void Playlist::add(std::shared_ptr<Playlist> element) {
     cycleCheck(element);
-    for (const auto &ptr : element->playlistsInside) {
-        playlistsInside.insert(ptr);
-    }
-    playlistsInside.insert(element.get());
+    element->playlistFathers.insert(this);
     elements.push_back(element);
 }
 
@@ -39,10 +44,19 @@ void Playlist::positionAdd(std::shared_ptr<Playable> element, size_t position) {
 }
 
 void Playlist::cycleCheck(std::shared_ptr<Playlist> element) {
-    if (element->playlistsInside.find(this) != element->playlistsInside.end()
-        || element.get() == this) {
+    if (playlistDFS(this, element.get())) {
         throw CyclicPlaylistInsertion();
     }
+}
+
+bool Playlist::playlistDFS(Playlist* node, Playlist* toFind) {
+    if (node == toFind)
+        return true;
+    for (auto playlist : node->playlistFathers) {
+        if (playlistDFS(playlist, toFind))
+            return true;
+    }
+    return false;
 }
 
 void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
@@ -51,15 +65,21 @@ void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
 
 void Playlist::add(std::shared_ptr<Playlist> element, size_t position) {
     cycleCheck(element);
-    for (const auto &ptr : element->playlistsInside) {
-        playlistsInside.insert(ptr);
-    }
-    playlistsInside.insert(element.get());
+    element->playlistFathers.insert(this);
     positionAdd(std::move(element), position);
+}
+
+void Playlist::simpleRemove(Playlist* element) {
+    playlistFathers.erase(element);
+}
+
+void Playlist::unpinFather(Playlist* father) {
+    playlistFathers.erase(father);
 }
 
 void Playlist::remove() {
     if (!elements.empty()) {
+        elements.back()->simpleRemove(this);
         elements.pop_back();
     } else {
         throw EmptyPlaylistRemove();
@@ -70,6 +90,7 @@ void Playlist::remove(size_t position) {
     if (elements.size() > position) {
         auto it = elements.begin();
         it += position;
+        elements[position]->simpleRemove(this);
         elements.erase(it);
     } else {
         throw IncorrectPosition();

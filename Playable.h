@@ -6,12 +6,17 @@
 #include <unordered_set>
 #include "PlayMode.h"
 
+class Playlist;
+
 class Playable {
 public:
     virtual void play() = 0;
 
     virtual ~Playable() = default;
 
+    virtual void simpleRemove(Playlist*) {};
+
+    virtual void unpinFather(Playlist*) {};
 };
 
 class Playlist : public Playable {
@@ -34,15 +39,24 @@ public:
 
     explicit Playlist(const std::string &name);
 
+    ~Playlist() override;
+
 private:
     void positionAdd(std::shared_ptr<Playable> element, size_t position);
 
     void cycleCheck(std::shared_ptr<Playlist> element);
 
+    bool playlistDFS(Playlist* node, Playlist* toFind);
+
+    void simpleRemove(Playlist* element) override;
+
+    void unpinFather(Playlist* father) override;
+
     const std::string name;
     std::shared_ptr<PlayMode> mode;
     std::vector<std::shared_ptr<Playable>> elements;
-    std::unordered_set<Playlist *> playlistsInside;
+    std::unordered_set<Playlist*> playlistFathers;
+
 };
 
 class Song : public Playable {

@@ -10,11 +10,18 @@
 #include "Playable.h"
 #include "File.h"
 
+
 class Player {
 
 public:
     std::shared_ptr<Playable> openFile(const File& file);
-    std::shared_ptr<Playlist> createPlaylist(const std::string &name);
+    std::shared_ptr<Playlist> createPlaylist(const std::string& name);
+    Player();
+
+private:
+    void registerStrat(std::string name, StratCreateMethod strat);
+
+    std::unordered_map<std::string, StratCreateMethod>& strats();
 };
 
 
