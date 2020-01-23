@@ -3,13 +3,12 @@
 #include "PlayerException.h"
 
 Playlist::Playlist(const std::string &name)
-    : name (name)
-    , mode(PlayModeFabric::createSequence())
-    {
-        mode->usageIncrement();
-    }
+        : name(name), mode(PlayModeFabric::createSequence()) {
+    mode->usageIncrement();
+}
 
 void Playlist::play() {
+    std::cout << "Playlist[" << name << "]" << std::endl;
     for (size_t i = 0; i < elements.size(); i++) {
         elements[mode->next(elements.size())]->play();
     }
@@ -22,7 +21,7 @@ void Playlist::add(std::shared_ptr<Playable> element) {
 
 void Playlist::add(std::shared_ptr<Playlist> element) {
     cycleCheck(element);
-    for (const auto& ptr : element->playlistsInside) {
+    for (const auto &ptr : element->playlistsInside) {
         playlistsInside.insert(ptr);
     }
     playlistsInside.insert(element.get());
@@ -41,7 +40,7 @@ void Playlist::positionAdd(std::shared_ptr<Playable> element, size_t position) {
 
 void Playlist::cycleCheck(std::shared_ptr<Playlist> element) {
     if (element->playlistsInside.find(this) != element->playlistsInside.end()
-            || element.get() == this) {
+        || element.get() == this) {
         throw CyclicPlaylistInsertion();
     }
 }
@@ -52,7 +51,7 @@ void Playlist::add(std::shared_ptr<Playable> element, size_t position) {
 
 void Playlist::add(std::shared_ptr<Playlist> element, size_t position) {
     cycleCheck(element);
-    for (const auto& ptr : element->playlistsInside) {
+    for (const auto &ptr : element->playlistsInside) {
         playlistsInside.insert(ptr);
     }
     playlistsInside.insert(element.get());
@@ -88,10 +87,8 @@ void Playlist::setMode(std::shared_ptr<PlayMode> mode) {
 
 Song::Song(std::string artist, std::string title,
            std::string other, std::string content)
-           : artist(std::move(artist))
-           , title(std::move(title))
-           , other(std::move(other))
-           , content(std::move(content)) {}
+        : artist(std::move(artist)), title(std::move(title)),
+          other(std::move(other)), content(std::move(content)) {}
 
 void Song::play() {
     std::cout << "Song ["
@@ -101,11 +98,9 @@ void Song::play() {
 }
 
 Movie::Movie(const size_t year, std::string title,
-        std::string other, std::string content)
-        : year(year)
-        , title(std::move(title))
-        , other(std::move(other))
-        , content(std::move(content)) {}
+             std::string other, std::string content)
+        : year(year), title(std::move(title)), other(std::move(other)),
+          content(std::move(content)) {}
 
 void Movie::play() {
     std::cout << "Movie ["

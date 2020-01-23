@@ -7,7 +7,7 @@
 
 class PlayerException : public std::exception {
 public:
-    virtual const char* what() const throw() {
+    const char* what() const noexcept override {
         return "PlayerException";
     }
     ~PlayerException() override = default;
@@ -15,42 +15,42 @@ public:
 
 class IncorrectPosition : public PlayerException {
 public:
-    const char* what() const throw() override {
+    const char* what() const noexcept override {
         return "Incorrect Playlist add/remove position";
     }
 };
 
 class EmptyPlaylistRemove : public PlayerException {
 public:
-    const char* what() const throw() override {
+    const char* what() const noexcept override {
         return "Remove called on empty Playlist";
     }
 };
 
 class InvalidType : public PlayerException {
 public:
-    const char* what() const throw() override {
+    const char* what() const noexcept override {
         return "Invalid type of file";
     }
 };
 
 class InvalidMetadata : public PlayerException {
 public:
-    const char* what() const throw() override {
+    const char* what() const noexcept override {
         return "Invalid metadata";
     }
 };
 
 class InvalidFileContent : public PlayerException {
 public:
-    const char* what() const throw() override {
+    const char* what() const noexcept override {
         return "Invalid file content";
     }
 };
 
 class CyclicPlaylistInsertion : public PlayerException {
 public:
-    const char* what() const throw() override {
+    const char* what() const noexcept override {
         return "Playlist adding will cause infinite cyclic playing";
     }
 };

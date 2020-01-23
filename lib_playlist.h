@@ -10,9 +10,11 @@
 std::shared_ptr<Sequence> createSequenceMode() {
     return PlayModeFabric::createSequence();
 }
+
 std::shared_ptr<Shuffle> createShuffleMode(unsigned seed) {
     return PlayModeFabric::createShuffle(seed);
 }
+
 std::shared_ptr<OddEven> createOddEvenMode() {
     return PlayModeFabric::createOddEven();
 }

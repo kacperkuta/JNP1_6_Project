@@ -7,10 +7,6 @@ PlayMode::PlayMode() : usage(0), position(0) {};
 
 PlayMode::PlayMode(unsigned position) : usage(0), position(position) {};
 
-std::shared_ptr<PlayMode> PlayMode::copyOf() {
-    return std::make_shared<PlayMode>();
-}
-
 int PlayMode::getUsage() {
     return usage;
 }
@@ -20,10 +16,8 @@ void PlayMode::usageIncrement() {
 }
 
 Shuffle::Shuffle(unsigned seed)
-    : PlayMode()
-    , generator(std::default_random_engine(seed))
-    , seed(seed)
-    , numbers(std::vector<size_t>()) {}
+        : PlayMode(), generator(std::default_random_engine(seed)), seed(seed),
+          numbers(std::vector<size_t>()) {}
 
 size_t Shuffle::next(size_t size) {
     if (numbers.empty()) {
@@ -32,11 +26,10 @@ size_t Shuffle::next(size_t size) {
         std::shuffle(numbers.begin(), numbers.end(), generator);
     }
     position++;
-    return numbers[position-1];
+    return numbers[position - 1];
 }
 
 void Shuffle::reset() {
-    generator = std::default_random_engine(seed);
     numbers.clear();
     position = 0;
     assert(numbers.empty());
@@ -49,7 +42,7 @@ std::shared_ptr<PlayMode> Shuffle::copyOf() {
 OddEven::OddEven() : PlayMode(1) {};
 
 size_t OddEven::next(size_t size) {
-    if (position >= size && position%2 == 1) {
+    if (position >= size && position % 2 == 1) {
         position = 2;
         return 0;
     } else {
@@ -96,12 +89,4 @@ std::shared_ptr<Sequence> PlayModeFabric::createSequence() {
     return std::make_shared<Sequence>();
 }
 
-/**
- * @brief Dummy for proper compiling.
- * @param size unused
- * @return 0
- */
-size_t PlayMode::next(size_t size) {
-    return 0;
-}
 
