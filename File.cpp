@@ -102,26 +102,20 @@ std::shared_ptr<Playable> OpenMovie::open(const std::string &desc) {
     std::string metadataName = result[i].substr(0, delimPos);
     
     if (metadataName == "year") {
-      if (yearPresent) {
-        throw InvalidMetadata();
-      }
       yearStr = result[i].substr(delimPos + 1, result[i].size() - delimPos - 1);
       std::regex reg("^[0-9][1-9]*$");
       if (!std::regex_match(yearStr, reg)) {
-        throw InvalidMetadata();
+        continue;
       }
       try {
         year = std::stoi(yearStr);
       }
       catch (const std::out_of_range &exception) {
-        throw InvalidMetadata();
+        continue;
       }
       yearPresent = true;
     }
     else if (metadataName == "title") {
-      if (titlePresent) {
-        throw InvalidMetadata();
-      }
       titlePresent = true;
       title = result[i].substr(delimPos + 1, result[i].size() - delimPos - 1);
     }
